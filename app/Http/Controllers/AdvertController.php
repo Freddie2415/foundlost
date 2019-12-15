@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Advert;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class AdvertController extends Controller
 {
@@ -14,24 +15,24 @@ class AdvertController extends Controller
      */
     public function index()
     {
-        $adverts = Advert::paginate(9);
-        $title = "Объявления";
+        $adverts = Advert::whereStatus('active')->paginate(9);
+        $title = "Все объявления";
         return view('adverts.index', compact('adverts', 'title'));
     }
 
     public function finds()
     {
-        $adverts = Advert::whereType('find')->paginate(9);
+        $adverts = Advert::whereType('find')->where('status','active')->paginate(9);
 
-        $title = "Объявления";
+        $title = "Объявления потерии";
         return view('adverts.index', compact('adverts', 'title'));
     }
 
     public function losts()
     {
-        $adverts = Advert::whereType('lost')->paginate(9);
+        $adverts = Advert::whereType('lost')->where('status','active')->paginate(9);
 
-        $title = "Объявления";
+        $title = "Находки";
         return view('adverts.index', compact('adverts', 'title'));
     }
 
@@ -52,6 +53,16 @@ class AdvertController extends Controller
         }
 
         return back();
+    }
+
+    public function filterByCategory(Request $request)
+    {
+        $filter = $request->get('category');
+
+        $title = "Фильтр по #$filter";
+        $adverts = Advert::whereCategory($filter)->where('status','active')->paginate(9);
+
+        return view('adverts.index',compact('adverts','title'));
     }
 
     /**
@@ -79,7 +90,7 @@ class AdvertController extends Controller
             'description' => 'required|max:255',
             'type' => 'required',
             'category' => 'required',
-            'incident_date' => 'required',
+            'incident_date' => 'sometimes',
             'phone' => 'required',
             'address' => 'required',
             'fee' => 'required',
@@ -105,6 +116,10 @@ class AdvertController extends Controller
                 foreach ($request->images as $file) {
                     $name = time() . $file->getClientOriginalName();
                     $file->move('image', $name);
+                    Image::make(public_path().'/image/'.$name)
+                        ->resize(500,300)
+                        ->save(public_path().'/image/'."crop".$name);
+
                     $images[] = $name;
                 }
             }

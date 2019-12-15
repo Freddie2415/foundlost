@@ -19,8 +19,21 @@ Auth::routes();
 
 Route::get('/home', 'AdvertController@index')->name('home');
 
-Route::resource('adverts', 'AdvertController')->middleware('auth');
-Route::get('/losts', 'AdvertController@losts')->middleware('auth');
-Route::get('/finds', 'AdvertController@finds')->middleware('auth');
-Route::get('/my-ad', 'AdvertController@myad')->name('myad')->middleware('auth');
-Route::post('/hide','AdvertController@hidead')->name('hidead');
+
+//Route::resource('adverts', 'AdvertController');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('adverts/create', 'AdvertController@create')->name('adverts.create');
+    Route::post('adverts', 'AdvertController@store')->name('adverts.store');
+});
+
+
+Route::get('adverts', 'AdvertController@index')->name('adverts.index');
+Route::get('adverts/{advert}', 'AdvertController@show')->name('adverts.show');
+
+Route::get('/losts', 'AdvertController@losts')->name('losts');
+Route::get('/finds', 'AdvertController@finds')->name('finds');
+Route::get('/my-ad', 'AdvertController@myad')->name('myad');
+Route::post('/hide', 'AdvertController@hidead')->name('hidead');
+
+Route::get('/filter', 'AdvertController@filterByCategory')->name('filter');

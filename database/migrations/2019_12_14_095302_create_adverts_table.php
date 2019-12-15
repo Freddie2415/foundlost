@@ -19,7 +19,7 @@ class CreateAdvertsTable extends Migration
             $table->string('description');
             $table->enum('type',['find','lost']);
             $table->string('category');
-            $table->dateTime('incident_date')->nullable();
+            $table->string('incident_date')->nullable();
             $table->string('phone');
             $table->string('address');
             $table->string('fee');

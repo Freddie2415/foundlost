@@ -20,9 +20,7 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
         <nav class="navbar navbar-expand navbar-white navbar-light">
-            <!-- SEARCH FORM -->
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search"

@@ -38,4 +38,9 @@ class Image extends Model
     {
         return file_exists(public_path().'/image/'.$this->name) ? '/image/' . $this->name : '/image/no-image.jpg';
     }
+
+    public function getCropPath()
+    {
+        return file_exists(public_path().'/image/crop'.$this->name) ? '/image/' . $this->name : '/image/no-image.jpg';
+    }
 }

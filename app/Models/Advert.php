@@ -55,4 +55,9 @@ class Advert extends Model
     {
         return !$this->images->isEmpty() ? '/image/' . $this->images[0]->name : '/image/no-image.jpg';
     }
+
+    public function cropImg()
+    {
+        return !$this->images->isEmpty() ? '/image/crop' . $this->images[0]->name : '/image/no-image.jpg';
+    }
 }
